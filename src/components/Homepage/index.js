@@ -1,7 +1,13 @@
 import React , { Component } from 'react'
 import './index.css'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import MultipleDropDown from 'react-select'
 import { validateEmail, validatePhone } from '../../utils/functions'
+import { options } from '../../constants/consts'
+const singleStyle = {
+    display: "flex",
+    flexDirection: "column"
+}
 
 class Homepage extends Component {
     constructor (props) {
@@ -12,6 +18,8 @@ class Homepage extends Component {
             phone: "",
             isEmail: false,
             isPhone: false,
+            countSelected: 1,
+            selectedOption: null,
         }
     }
     /*Detect Email Input Change */
@@ -27,6 +35,26 @@ class Homepage extends Component {
             phone: e.target.value,
             isPhone: validatePhone(e.target.value)
         })
+    }
+    /* Detect Single Select Dropdown and Render Label element depend on Value */
+    onChangeSingleSelect = (e) => {
+        this.setState ({
+            countSelected: e.target.value,
+        })
+    }
+    renderLabelDependOnCount = ( count ) => {
+        var elements = []
+        for (var i = 0; i < count ; i++) {
+            elements.push(<Label key={i}>{i + 1}th Element</Label>)
+        }
+        return  <div style={ singleStyle }>
+                    { elements }
+                </div>
+    }
+    /* Detect Multiple DropDown Change*/
+    onChangeMultipleDropDown = (selectedOption) => {
+        this.setState({ selectedOption });
+        console.log(`Option selected:`, selectedOption);
     }
     /* Render SingleDropDown */
     renderSingleDropDown () {
@@ -57,13 +85,20 @@ class Homepage extends Component {
                     </FormGroup>
                     <FormGroup>
                         <Label for="singleSelect">Select</Label>
-                        <Input type="select" name="select" id="singleSelect">
+                        <Input type="select" name="select" id="singleSelect" onChange={this.onChangeSingleSelect}>
                             {this.renderSingleDropDown()}
                         </Input>
+                        {this.renderLabelDependOnCount(this.state.countSelected)}
                     </FormGroup>
                     <FormGroup>
                         <Label for="selectMulti">Select Multiple</Label>
-                        
+                        <MultipleDropDown
+                            id="selectMulti"
+                            value={this.state.selectedOption}
+                            onChange={this.onChangeMultipleDropDown}
+                            options={options}
+                            isMulti={true}
+                        />
                     </FormGroup>
                     <FormGroup>
                         <Label for="textarea">Text Area</Label>
