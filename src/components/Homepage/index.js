@@ -20,6 +20,7 @@ class Homepage extends Component {
             isPhone: false,
             countSelected: 1,
             selectedOption: null,
+            isRenderRadio: false,
         }
     }
     /*Detect Email Input Change */
@@ -55,6 +56,13 @@ class Homepage extends Component {
     onChangeMultipleDropDown = (selectedOption) => {
         this.setState({ selectedOption });
         console.log(`Option selected:`, selectedOption);
+    }
+    /* Detect Toggle Checkbox */
+    onChangeCheckBox = () => {
+        const isRenderRadio = this.state.isRenderRadio
+        this.setState({
+            isRenderRadio: !isRenderRadio
+        })
     }
     /* Render SingleDropDown */
     renderSingleDropDown () {
@@ -113,8 +121,8 @@ class Homepage extends Component {
                             
                         </FormText>
                     </FormGroup>
-                    <FormGroup tag="fieldset">
-                        <legend>Radio Buttons</legend>
+                    <FormGroup tag="fieldset" hidden={!this.state.isRenderRadio}>
+                        <legend>Radio Buttons When Change Checkbox status to True.</legend>
                         <FormGroup check>
                             <Label check>
                             <Input type="radio" name="radio1" />{' '}
@@ -123,21 +131,22 @@ class Homepage extends Component {
                         </FormGroup>
                         <FormGroup check>
                             <Label check>
-                            <Input type="radio" name="radio2" />{' '}
-                                option2
+                            <Input type="radio" name="radio1" />{' '}
+                                option 2
                             </Label>
                         </FormGroup>
-                        <FormGroup check disabled>
+                        <FormGroup check>
                             <Label check>
-                            <Input type="radio" name="radio3" disabled />{' '}
+                            <Input type="radio" name="radio1" />{' '}
                                 option 3
                             </Label>
                         </FormGroup>
                     </FormGroup>
                     <FormGroup check>
                         <Label check>
-                            <Input type="checkbox" />{' '}
-                            Check me out
+                            {/* Sorry for Little Dirty Coding for Checkbox, Input type = checkbox has some bugs. */}
+                            <Input type="checkbox" onClick={this.onChangeCheckBox}/>{' '}   
+                            Render Radio Buttons
                         </Label>
                     </FormGroup>
                     <Button>Submit</Button>

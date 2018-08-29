@@ -37,7 +37,7 @@ export const postDataService = (url, item, authentication_token ) => {
 }
 
 export const deleteDataService = (url, authentication_token) => {
-    return fetch('https://boiling-anchorage-83020.herokuapp.com/users/9/jobs.json', {
+    return fetch(baseUrl + url, {
         method: 'DELETE',
         headers: {
             'Accept': '*',
