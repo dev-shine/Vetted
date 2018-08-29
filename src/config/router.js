@@ -10,12 +10,12 @@ import Homepage from '../containers/Homepage';
 class RouterComponent extends Component {
     render () {
         return (
-            <div style={{ height: '100vh', display: 'flex' }}>
+            <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
                 <Headers />
                 <Switch>
                     <Route path="/" component={Homepage} />
                 </Switch>
-                {/* <Footers /> */}
+                <Footers />
             </div>
         )
     }

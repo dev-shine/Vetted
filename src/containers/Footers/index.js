@@ -8,7 +8,7 @@ class FooterContainer extends Component {
     render () {
         return (
             <div className="footer-container">
-                This is header container!
+                <h1>This is Footer container!</h1>
             </div>
         )
     }
