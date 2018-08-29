@@ -2,9 +2,11 @@ import {
      API_LOADING,
      OPERATION_FAILED,
      GET_MULTIPLEDROPDOWN_OPTIONS_SUCCESS,
+     SUBMIT_FROMDATA_SUCCESS,
 } from '../constants/actionTypes';
 import {
-    fetchDataService
+    fetchDataService,
+    updateDataService
 } from '../apis'
 /* Api Loading  */
 export function fetchingData() {
@@ -34,6 +36,28 @@ export function getMultiOptions() {
         return fetchDataService('/multioptions/') // getState().Auth.userId , getState().Auth.authentication_token) it will be required in Real App.
         .then((response) => {
             dispatch(getedMultiOptionsSuccess(response));
+        })
+        .catch(err => {
+            dispatch(operationFailed(err));
+        })
+    }
+}
+
+/*Submit Form Data to Backend Api for Update */
+export function submitFormDataSuccess(result) {
+    return {
+        type: SUBMIT_FROMDATA_SUCCESS,
+        result
+    }
+}
+
+export function submitFormData(items) {
+    return (dispatch, getState) => {
+        console.log(getState())
+        dispatch(fetchingData());
+        return updateDataService('/form/', items) // getState().Auth.userId , getState().Auth.authentication_token) it will be required in Real App.
+        .then((response) => {
+            dispatch(submitFormDataSuccess(response));
         })
         .catch(err => {
             dispatch(operationFailed(err));

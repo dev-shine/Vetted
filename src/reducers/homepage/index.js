@@ -3,6 +3,7 @@ import {
     OPERATION_FAILED,
     API_LOADING,
     GET_MULTIPLEDROPDOWN_OPTIONS_SUCCESS,
+    SUBMIT_FROMDATA_SUCCESS,
 } from '../../constants/actionTypes';
 /* Initial State */
 const initialState = {
@@ -29,6 +30,8 @@ const reducer = (state = initialState, action) => {
             newState.apiLoading = false;
             newState.errors.push(action.error);
 
+        case SUBMIT_FROMDATA_SUCCESS:
+            newState.apiLoading = false
         default:
             return state;
     }

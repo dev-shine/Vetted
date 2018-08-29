@@ -22,6 +22,7 @@ class Homepage extends Component {
             selectedOption: null,
             isRenderRadio: false,
         }
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     /*Detect Email Input Change */
     onChangeEmail = (e) => {
@@ -73,12 +74,32 @@ class Homepage extends Component {
             }
         )
     }
+    /* Submit Change of Form to Backend */
+    handleSubmit = (event) => {
+        /* Get Function from Propagation */
+        const { submitFormData } = this.props
+
+        event.preventDefault();
+        const data = {}
+        const length = event.target.length
+        for (var i = 0; i < length ; i++) {
+            /* Consider Unneeded Changeable Input */
+            if (event.target[i].value === "" || event.target[i].id === "") {
+                continue;
+            }
+            data[event.target[i].id] = event.target[i].value
+        }
+        data.selectedOption = this.state.selectedOption
+        
+        /* Now , Submit................. */
+        submitFormData(data)
+    }
     render () {
         // const { options } = this.props // If backend is alive you can use this options.
         const options = options_ // Dropdown options         
         return (
             <div className="homepage-container">
-                <Form>
+                <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
                         <Label for="email">Email</Label>
                         <Input type="email" name="email" id="email" placeholder="Email" value={this.state.email} onChange={this.onChangeEmail}/>
@@ -103,7 +124,6 @@ class Homepage extends Component {
                     <FormGroup>
                         <Label for="selectMulti">Select Multiple</Label>
                         <MultipleDropDown
-                            id="selectMulti"
                             value={this.state.selectedOption}
                             onChange={this.onChangeMultipleDropDown}
                             options={ options }
@@ -145,11 +165,11 @@ class Homepage extends Component {
                     <FormGroup check>
                         <Label check>
                             {/* Sorry for Little Dirty Coding for Checkbox, Input type = checkbox has some bugs. */}
-                            <Input type="checkbox" onClick={this.onChangeCheckBox}/>{' '}   
+                            <Input id="checkbox" type="checkbox" onClick={this.onChangeCheckBox}/>{' '}   
                             Render Radio Buttons
                         </Label>
                     </FormGroup>
-                    <Button>Submit</Button>
+                    <Button type="submit">Submit</Button>
                 </Form>
             </div>
         )

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Homepage from '../../components/Homepage'
 import { 
-    getMultiOptions
+    getMultiOptions,
+    submitFormData,
  } from '../../actions/homepage';
 
  
@@ -40,6 +41,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         getMultiOptions: () => {
             dispatch(getMultiOptions())
+        },
+        submitFormData: (items) => {
+            dispatch(submitFormData(items))
         }
     };
 }
