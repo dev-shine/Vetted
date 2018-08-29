@@ -3,7 +3,7 @@ import './index.css'
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import MultipleDropDown from 'react-select'
 import { validateEmail, validatePhone } from '../../utils/functions'
-import { options } from '../../constants/consts'
+import { options_ } from '../../constants/consts'
 const singleStyle = {
     display: "flex",
     flexDirection: "column"
@@ -66,6 +66,8 @@ class Homepage extends Component {
         )
     }
     render () {
+        // const { options } = this.props // If backend is alive you can use this options.
+        const options = options_ // Dropdown options         
         return (
             <div className="homepage-container">
                 <Form>
@@ -96,7 +98,7 @@ class Homepage extends Component {
                             id="selectMulti"
                             value={this.state.selectedOption}
                             onChange={this.onChangeMultipleDropDown}
-                            options={options}
+                            options={ options }
                             isMulti={true}
                         />
                     </FormGroup>

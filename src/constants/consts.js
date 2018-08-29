@@ -1,4 +1,4 @@
-const options = [
+const options_ = [
     { value: 'grape', label: 'Grape' },
     { value: 'pear', label: 'Pear' },
     { value: 'apple', label: 'Apple' },
@@ -6,4 +6,4 @@ const options = [
     { value: 'strawberry', label: 'Strawberry' },
     { value: 'vanilla', label: 'Vanilla' }
 ];
-export { options }
+export { options_ }
