@@ -5,7 +5,7 @@ import {
 } from 'react-router';
 import Headers from '../containers/Headers';
 import Footers from '../containers/Footers';
-import DashboardPage from '../containers/Dashboard';
+import Homepage from '../containers/Homepage';
 
 class RouterComponent extends Component {
     render () {
@@ -13,7 +13,7 @@ class RouterComponent extends Component {
             <div style={{ height: '100vh', display: 'flex' }}>
                 <Headers />
                 <Switch>
-                    <Route path="/" component={DashboardPage} />
+                    <Route path="/" component={Homepage} />
                 </Switch>
                 {/* <Footers /> */}
             </div>
