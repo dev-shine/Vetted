@@ -4,3 +4,8 @@
 .homepage-container form .form-group label.unvalidate {
     color: red;
 }
+
+.homepage-antd-container form {
+    display: flex;
+    flex-direction: column;
+}

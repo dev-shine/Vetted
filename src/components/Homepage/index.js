@@ -1,6 +1,6 @@
 import React , { Component } from 'react'
 import './index.css'
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, FormText, Alert } from 'reactstrap';
 import MultipleDropDown from 'react-select'
 import { validateEmail, validatePhone } from '../../utils/functions'
 import { options_ } from '../../constants/consts'
@@ -21,8 +21,12 @@ class Homepage extends Component {
             countSelected: 1,
             selectedOption: null,
             isRenderRadio: false,
+            visibleSuccess: false,
+            visibleWarning: false,
+            alertObject: "",
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onDismiss = this.onDismiss.bind(this);
     }
     /*Detect Email Input Change */
     onChangeEmail = (e) => {
@@ -31,12 +35,30 @@ class Homepage extends Component {
             isEmail: validateEmail(e.target.value)
         })
     }
+    onBlurEmail = (e) => {
+        const { submitFormData } = this.props
+        if (this.state.isEmail) {
+            submitFormData({email: this.state.email})
+            this.showSuccessAlert("Email")
+        } else {
+            this.showWarningAlert()
+        }
+    }
     /*Detect Phone Number Input Change */
     onChangePhone = (e) => {
         this.setState ({
             phone: e.target.value,
             isPhone: validatePhone(e.target.value)
         })
+    }
+    onBlurPhone = (e) => {
+        const { submitFormData } = this.props
+        if (this.state.isPhone) {
+            submitFormData({phone: this.state.phone})
+            this.showSuccessAlert("Phone")
+        } else {
+            this.showWarningAlert()
+        }
     }
     /* Detect Single Select Dropdown and Render Label element depend on Value */
     onChangeSingleSelect = (e) => {
@@ -57,6 +79,15 @@ class Homepage extends Component {
     onChangeMultipleDropDown = (selectedOption) => {
         this.setState({ selectedOption });
         console.log(`Option selected:`, selectedOption);
+    }
+    onBlurDropDown = (e) => {
+        const { submitFormData } = this.props
+        if (this.state.selectedOption.length !== 0) {
+            submitFormData({options: this.state.selectedOption})
+            this.showSuccessAlert("DropDown")
+        } else {
+            this.showWarningAlert()
+        }
     }
     /* Detect Toggle Checkbox */
     onChangeCheckBox = () => {
@@ -94,16 +125,40 @@ class Homepage extends Component {
         /* Now , Submit................. */
         submitFormData(data)
     }
+    /* Alert Diaolog */
+    onDismiss() {
+        this.setState({ visibleSuccess: false })
+        this.setState({ visibleWarning: false })
+    }
+    showSuccessAlert ( object) {
+        this.setState({
+            visibleSuccess: true,
+            visibleWarning: false,
+            alertObject: object,
+        })
+    }
+    showWarningAlert () {
+        this.setState({
+            visibleWarning: true,
+            visibleSuccess: false,
+        })
+    }
     render () {
         // const { options } = this.props // If backend is alive you can use this options.
         const options = options_ // Dropdown options         
         return (
             <div className="homepage-container">
+                <Alert color="success" isOpen={this.state.visibleSuccess} toggle={this.onDismiss}>
+                    Your {this.state.alertObject} Change Requirement Successfully Submitted to Backend API
+                </Alert>
+                <Alert color="warning" isOpen={this.state.visibleWarning} toggle={this.onDismiss}>
+                    Please confirm Validation!
+                </Alert>
                 <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
                         <Label for="email">Email</Label>
-                        <Input type="email" name="email" id="email" placeholder="Email" value={this.state.email} onChange={this.onChangeEmail}/>
-                        <Label>{this.state.isEmail?  "Validated Email" : "Email is Invalidated"}</Label>
+                        <Input type="email" name="email" id="email" placeholder="Email" value={this.state.email} onChange={this.onChangeEmail} onBlur={this.onBlurEmail} onFocus={this.onDismiss}/>
+                        <Label className={this.state.isEmail? "" : "unvalidate"}>{this.state.isEmail?  "Validated Email" : "Email is Invalidated"}</Label>
                     </FormGroup>
                     <FormGroup>
                         <Label for="password">Password</Label>
@@ -111,7 +166,7 @@ class Homepage extends Component {
                     </FormGroup>
                     <FormGroup>
                         <Label for="phone">Phone</Label>
-                        <Input type="phone" name="phone" id="phone" placeholder="Phone Number" value={this.state.phone} onChange={this.onChangePhone}/>
+                        <Input type="phone" name="phone" id="phone" placeholder="Phone Number" value={this.state.phone} onChange={this.onChangePhone} onBlur={this.onBlurPhone} onFocus={this.onDismiss}/>
                         <Label className={this.state.isPhone? "" : "unvalidate"}>{this.state.isPhone?  "Validated PhoneNumber" : "Phone Number is Invalidated"}</Label>
                     </FormGroup>
                     <FormGroup>
@@ -128,11 +183,13 @@ class Homepage extends Component {
                             onChange={this.onChangeMultipleDropDown}
                             options={ options }
                             isMulti={true}
+                            onFocus={this.onDismiss}
+                            onBlur={this.onBlurDropDown}
                         />
                     </FormGroup>
                     <FormGroup>
                         <Label for="textarea">Text Area</Label>
-                        <Input type="textarea" name="text" id="textarea" />
+                        <Input type="textarea" name="text" id="textarea" onFocus={this.onDismiss}/>
                     </FormGroup>
                     <FormGroup>
                         <Label for="file">File</Label>

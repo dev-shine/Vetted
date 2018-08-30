@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Homepage from '../../components/Homepage'
+import HomepageAntD from '../../components/Homepage/index_antd'
 import { 
     getMultiOptions,
     submitFormData,
@@ -22,9 +23,11 @@ class HomeContainer extends Component {
         getMultiOptions()
     }
     render () {
+        const { isAntD } = this.props
+        console.log("++++++++++++++++++++++++++++++++++++++++++++", isAntD)
         return (
             <div className="">
-                <Homepage {...this.props} />
+                {isAntD?  <HomepageAntD {...this.props} /> : <Homepage {...this.props} />}
             </div>
         )
     }
@@ -34,6 +37,7 @@ class HomeContainer extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         options: state.homepage.options,
+        isAntD: state.header.isAntD,
     };
 };
 

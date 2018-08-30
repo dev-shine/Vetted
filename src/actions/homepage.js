@@ -3,6 +3,7 @@ import {
      OPERATION_FAILED,
      GET_MULTIPLEDROPDOWN_OPTIONS_SUCCESS,
      SUBMIT_FROMDATA_SUCCESS,
+     TOGGLE_DESIGN_STYLE,
 } from '../constants/actionTypes';
 import {
     fetchDataService,
@@ -62,5 +63,13 @@ export function submitFormData(items) {
         .catch(err => {
             dispatch(operationFailed(err));
         })
+    }
+}
+
+/* Toggle Design Style */
+export function toggleDesignStyle(isAntD) {
+    return {
+        type: TOGGLE_DESIGN_STYLE,
+        isAntD
     }
 }

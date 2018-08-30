@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import Header from '../../components/Header'
+import { 
+   toggleDesignStyle
+} from '../../actions/homepage';
 
 class HeaderContainer extends Component {
     constructor (props) {
@@ -7,11 +12,28 @@ class HeaderContainer extends Component {
 
     render () {
         return (
-            <div className="header-container">
-                <h1> This is Header </h1>
+            <div className="">
+                <Header {...this.props}/>
             </div>
         )
     }
 }
 
-export default HeaderContainer;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        isAntD: state.header.isAntD,
+    };
+};
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        toggleDesignStyle: (isAntD) => {
+            dispatch(toggleDesignStyle(isAntD))
+        }
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(HeaderContainer);
